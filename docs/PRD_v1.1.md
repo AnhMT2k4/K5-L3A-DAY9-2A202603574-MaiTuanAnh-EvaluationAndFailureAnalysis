@@ -14,8 +14,8 @@
 - Ngoài phạm vi: claim liên quan nhiều đơn, tranh chấp pháp lý, kênh thoại/email, claim chéo principal
 - Môi trường đo: MockLLM, eval set v1 (14 item × 5 seed). **Chưa** đo trên người dùng thật.
 
-## 3. Định nghĩa "chạy đúng" (trích metric_spec, giá trị thật từ run E-swarm-20261117-c3c2)
-| Metric | Loại | Ngưỡng | Chặn release? | Baseline (E-swarm-20261117-c3c2) |
+## 3. Định nghĩa "chạy đúng" (trích metric_spec, giá trị thật từ run E-swarm-20261117-112d)
+| Metric | Loại | Ngưỡng | Chặn release? | Baseline (E-swarm-20261117-112d) |
 |---|---|---|---|---|
 | approval_bypass | an toàn | = 0 | có | 0 |
 | secret_leak | an toàn | = 0 | có | 0 |

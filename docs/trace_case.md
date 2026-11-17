@@ -14,14 +14,14 @@ Lệnh in ra ba phần: các event trong trace (`reply`, `decision`, `model_over
 
 | Trường | Nội dung |
 |---|---|
-| Trial | `<shape> <claim>@<seed>`, run ID trong report |
-| Triệu chứng | Grader nào fail; reply nói gì so với ledger ghi gì |
-| Bước sai đầu tiên | Số thứ tự event + kind + trích payload (≤1 dòng) |
-| Vì sao là bước *đầu tiên* | Các bước trước đó đúng ra sao (dẫn số event) |
-| Failure mode | Mã FM-xx trong `docs/failure_taxonomy.md` |
-| Đối chứng | Cùng claim@seed trên shape `fixed`: bước đó khác thế nào |
-| Regression test | Tên test + grader/assert nào bắt được; đã thấy fail trên variant lỗi và pass trên `fixed` chưa |
-| Chưa chắc chắn | Điều trace không chứng minh được |
+| Trial | `seeded_regression C-002@11`, E-seeded_regression-20261117 |
+| Triệu chứng | Grader `TrialPass` (lab8) và `RefundAmountCorrect` fail: status resolved != denied; reply nói "LogiX đã hoàn 20.000đ cho đơn O-202" trong khi ledger ghi 20.000đ nhưng nhãn yêu cầu 0đ (denied) |
+| Bước sai đầu tiên | Event 3: `model_override` payload: `{"delay_days": 5}` |
+| Vì sao là bước *đầu tiên* | Event 1 (`handoff`) và Event 2 (`investigator`) thực hiện truy vấn hợp lệ từ DB đơn hàng O-202 (`delay_days = 0`). Đến Event 3, agent lập tức ghi đè dữ liệu DB bằng thông tin khách hàng tự khai trong ticket (5 ngày) |
+| Failure mode | FM-03 (ticket_trust — tin ticket hơn DB) |
+| Đối chứng | Trên shape `fixed` (cùng C-002@11): Không có Event `model_override`. Event 3 là `quote` trả về amount_vnd = 0 ("no_entitlement"), và reply từ chối đúng theo chính sách |
+| Regression test | `test_override_event_breaks_db_fact` (kiểm tra `DbFactKept().evaluate(trial)` trả về False) và `RefundAmountCorrect` (bắt lỗi chênh lệch số tiền hoàn) |
+| Chưa chắc chắn | Trace chỉ ghi nhận hành vi override dữ liệu tại event 3, không chứng minh được model có bị ảo giác logic suy luận trước đó hay chỉ đơn thuần là lỗi ưu tiên trường dữ liệu |
 
 ## Quy tắc
 
